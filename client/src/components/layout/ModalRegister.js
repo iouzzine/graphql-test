@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { removeModalLogin, setModalREGISTER } from '../../actions/modal';
+import { removeModalREGISTER, setModalLogin } from '../../actions/modal';
 import {
   Button,
   Avatar,
@@ -20,19 +20,23 @@ const Transition = forwardRef((props, ref) => {
   return <Slide direction="left" ref={ref} {...props} />;
 });
 
-const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
+const ModalRegister = ({
+  removeModalREGISTER,
+  setModalLogin,
+  isOpenRegister
+}) => {
   const classes = useStyles();
 
-  const openRegister = () => {
-    removeModalLogin();
-    setModalREGISTER();
+  const openLogin = () => {
+    removeModalREGISTER();
+    setModalLogin();
   };
 
   return (
     <div>
       <Dialog
-        open={isOpenLogin}
-        onClose={removeModalLogin}
+        open={isOpenRegister}
+        onClose={removeModalREGISTER}
         aria-labelledby="form-dialog-title"
         TransitionComponent={Transition}
       >
@@ -42,7 +46,7 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Login
+              Register
             </Typography>
             <form className={classes.form}>
               <TextField
@@ -60,11 +64,33 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
                 margin="normal"
                 required
                 fullWidth
+                name="email"
+                label="Email"
+                type="email"
+                id="email"
+                autoComplete="email"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="confPassword"
+                label="Password Confimation"
+                type="password"
+                id="confirmPassword"
+                autoComplete="confirmPwd"
               />
               <Button
                 type="submit"
@@ -80,9 +106,9 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
                   <Link
                     variant="body2"
                     className={classes.link}
-                    onClick={openRegister}
+                    onClick={openLogin}
                   >
-                    Don't have an account? Sign Up
+                    Already have an account? Sign in
                   </Link>
                 </Grid>
               </Grid>
@@ -94,16 +120,16 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
   );
 };
 
-ModalLogin.propTypes = {
-  removeModalLogin: PropTypes.func.isRequired,
-  setModalREGISTER: PropTypes.func.isRequired,
-  isOpenLogin: PropTypes.bool
+ModalRegister.propTypes = {
+  removeModalRegister: PropTypes.func,
+  setModalLogin: PropTypes.func,
+  isOpenRegister: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-  isOpenLogin: state.modal.isOpenLogin
+  isOpenRegister: state.modal.isOpenRegister
 });
 
-export default connect(mapStateToProps, { removeModalLogin, setModalREGISTER })(
-  ModalLogin
+export default connect(mapStateToProps, { removeModalREGISTER, setModalLogin })(
+  ModalRegister
 );

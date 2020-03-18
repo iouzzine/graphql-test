@@ -2,14 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setModal } from '../actions/modal';
+import { setModalLogin, setModalREGISTER } from '../actions/modal';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import ModalLogin from './layout/ModalLogin';
+import ModalRegister from './layout/ModalRegister';
 
 // Styles
 import useStyles from '../palette/Classes';
 
-const Navbar = ({ setModal, isOpen }) => {
+const Navbar = ({
+  setModalLogin,
+  setModalREGISTER,
+  isOpenLogin,
+  isOpenRegister
+}) => {
   const classes = useStyles();
 
   return (
@@ -29,27 +35,37 @@ const Navbar = ({ setModal, isOpen }) => {
           <Button
             color="inherit"
             style={{ marginRight: '0.5rem' }}
-            onClick={setModal}
+            onClick={setModalLogin}
           >
             Login
           </Button>
-          <Button color="inherit" style={{ marginRight: '1rem' }}>
+          <Button
+            color="inherit"
+            style={{ marginRight: '1rem' }}
+            onClick={setModalREGISTER}
+          >
             Register
           </Button>
         </Toolbar>
       </AppBar>
-      {isOpen && <ModalLogin />}
+      {isOpenLogin && <ModalLogin />}
+      {isOpenRegister && <ModalRegister />}
     </>
   );
 };
 
 Navbar.propTypes = {
-  setModal: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool
+  setModalLogin: PropTypes.func.isRequired,
+  setModalREGISTER: PropTypes.func.isRequired,
+  isOpenLogin: PropTypes.bool,
+  isOpenRegister: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-  isOpen: state.modal.isOpen
+  isOpenLogin: state.modal.isOpenLogin,
+  isOpenRegister: state.modal.isOpenRegister
 });
 
-export default connect(mapStateToProps, { setModal })(Navbar);
+export default connect(mapStateToProps, { setModalLogin, setModalREGISTER })(
+  Navbar
+);

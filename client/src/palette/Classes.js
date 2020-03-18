@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
     color: '#fff',
     marginRight: theme.spacing(1)
   },
+  modal: {
+    background: '#292F36'
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -34,9 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     color: '#fff',
+    cursor: 'pointer',
     '&:hover': {
       textDecoration: 'none',
-      fontSize: '0.9rem',
       color: '#C4D6B0'
     }
   }

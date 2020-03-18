@@ -1,20 +1,34 @@
-import { SET_MODAL, REMOVE_MODAL } from './types';
+import {
+  SET_MODAL_LOGIN,
+  SET_MODAL_REGISTER,
+  REMOVE_MODAL_LOGIN,
+  REMOVE_MODAL_REGISTER
+} from '../reducers/types';
 
 const initalState = {
-  isOpen: false
+  isOpenLogin: false,
+  isOpenRegister: false
 };
 
 export default (state = initalState, action) => {
   const { type } = action;
 
   switch (type) {
-    case SET_MODAL:
+    case SET_MODAL_LOGIN:
       return {
-        isOpen: true
+        isOpenLogin: true
       };
-    case REMOVE_MODAL:
+    case REMOVE_MODAL_LOGIN:
       return {
-        isOpen: false
+        isOpenLogin: false
+      };
+    case SET_MODAL_REGISTER:
+      return {
+        isOpenRegister: true
+      };
+    case REMOVE_MODAL_REGISTER:
+      return {
+        isOpenRegister: false
       };
     default:
       return state;
