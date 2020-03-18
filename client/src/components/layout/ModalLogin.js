@@ -1,7 +1,10 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
 import { removeModalLogin, setModalREGISTER } from '../../actions/modal';
+import { setLogin } from '../../actions/auth';
 import {
   Button,
   Avatar,
@@ -20,12 +23,52 @@ const Transition = forwardRef((props, ref) => {
   return <Slide direction="left" ref={ref} {...props} />;
 });
 
-const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
+const userLogin = gql`
+  mutation loginUser($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      email
+      username
+      token
+    }
+  }
+`;
+
+const ModalLogin = ({
+  removeModalLogin,
+  setModalREGISTER,
+  setLogin,
+  isOpenLogin
+}) => {
   const classes = useStyles();
+
+  const [loginUser] = useMutation(userLogin);
 
   const openRegister = () => {
     removeModalLogin();
     setModalREGISTER();
+  };
+
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+
+  const { username, password } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    loginUser({
+      variables: {
+        username,
+        password
+      }
+    }).then(res => {
+      setLogin(res.data);
+      removeModalLogin();
+    });
   };
 
   return (
@@ -44,16 +87,16 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={e => onSubmit(e)}>
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="username"
                 label="Username"
                 name="username"
-                autoComplete="username"
+                value={username}
+                onChange={e => onChange(e)}
               />
               <TextField
                 variant="outlined"
@@ -63,8 +106,8 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
                 name="password"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
+                value={password}
+                onChange={e => onChange(e)}
               />
               <Button
                 type="submit"
@@ -97,6 +140,7 @@ const ModalLogin = ({ removeModalLogin, setModalREGISTER, isOpenLogin }) => {
 ModalLogin.propTypes = {
   removeModalLogin: PropTypes.func.isRequired,
   setModalREGISTER: PropTypes.func.isRequired,
+  setLogin: PropTypes.func.isRequired,
   isOpenLogin: PropTypes.bool
 };
 
@@ -104,6 +148,8 @@ const mapStateToProps = state => ({
   isOpenLogin: state.modal.isOpenLogin
 });
 
-export default connect(mapStateToProps, { removeModalLogin, setModalREGISTER })(
-  ModalLogin
-);
+export default connect(mapStateToProps, {
+  removeModalLogin,
+  setModalREGISTER,
+  setLogin
+})(ModalLogin);

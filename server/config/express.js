@@ -26,7 +26,7 @@ app.use('/api', routes);
 // mount graphql
 app.use(
   '/api/graphql',
-  graphqlHTTP((req) => ({
+  graphqlHTTP(req => ({
     schema: userGraph,
     graphiql: true,
     context: {

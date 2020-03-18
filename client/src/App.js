@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 // Components
 import Navbar from './components/Navbar';
@@ -17,20 +19,26 @@ import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
 
+const client = new ApolloClient({
+  uri: 'http://localhost:4040/api/graphql'
+});
+
 export default () => {
   return (
-    <Provider store={store}>
-      <Router>
-        <ThemeProvider theme={Theme}>
-          <CssBaseline />
-          <Navbar />
-          <Container>
-            <main>
-              <h2>Test</h2>
-            </main>
-          </Container>
-        </ThemeProvider>
-      </Router>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <Router>
+          <ThemeProvider theme={Theme}>
+            <CssBaseline />
+            <Navbar />
+            <Container>
+              <main>
+                <h2>Test</h2>
+              </main>
+            </Container>
+          </ThemeProvider>
+        </Router>
+      </Provider>
+    </ApolloProvider>
   );
 };
