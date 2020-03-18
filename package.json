@@ -6,13 +6,15 @@
   "scripts": {
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "cypress:open": "cypress open"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.1.0",
+    "cypress": "^4.2.0",
     "nodemon": "^2.0.2"
   }
 }

@@ -107,6 +107,7 @@ const ModalRegister = ({
                     variant="body2"
                     className={classes.link}
                     onClick={openLogin}
+                    id="loginLink"
                   >
                     Already have an account? Sign in
                   </Link>

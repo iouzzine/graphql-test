@@ -14,7 +14,8 @@ const Navbar = ({
   setModalLogin,
   setModalREGISTER,
   isOpenLogin,
-  isOpenRegister
+  isOpenRegister,
+  auth: { user, isAuthenticated }
 }) => {
   const classes = useStyles();
 
@@ -32,20 +33,34 @@ const Navbar = ({
               GraphQL
             </Typography>
           </Typography>
-          <Button
-            color="inherit"
-            style={{ marginRight: '0.5rem' }}
-            onClick={setModalLogin}
-          >
-            Login
-          </Button>
-          <Button
-            color="inherit"
-            style={{ marginRight: '1rem' }}
-            onClick={setModalREGISTER}
-          >
-            Register
-          </Button>
+          {!isAuthenticated ? (
+            <>
+              <Button
+                color="inherit"
+                style={{ marginRight: '0.5rem' }}
+                onClick={setModalLogin}
+                id="loginModal"
+              >
+                Login
+              </Button>
+              <Button
+                color="inherit"
+                style={{ marginRight: '1rem' }}
+                onClick={setModalREGISTER}
+              >
+                Register
+              </Button>
+            </>
+          ) : (
+            <Typography
+              variant="h6"
+              component={Link}
+              to="/"
+              className={classes.title}
+            >
+              username: {user.username}
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
       {isOpenLogin && <ModalLogin />}
@@ -58,12 +73,14 @@ Navbar.propTypes = {
   setModalLogin: PropTypes.func.isRequired,
   setModalREGISTER: PropTypes.func.isRequired,
   isOpenLogin: PropTypes.bool,
-  isOpenRegister: PropTypes.bool
+  isOpenRegister: PropTypes.bool,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   isOpenLogin: state.modal.isOpenLogin,
-  isOpenRegister: state.modal.isOpenRegister
+  isOpenRegister: state.modal.isOpenRegister,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { setModalLogin, setModalREGISTER })(

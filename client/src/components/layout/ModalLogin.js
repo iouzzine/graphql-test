@@ -95,6 +95,7 @@ const ModalLogin = ({
                 fullWidth
                 label="Username"
                 name="username"
+                id="username"
                 value={username}
                 onChange={e => onChange(e)}
               />
@@ -105,6 +106,7 @@ const ModalLogin = ({
                 fullWidth
                 name="password"
                 label="Password"
+                id="password"
                 type="password"
                 value={password}
                 onChange={e => onChange(e)}
@@ -114,6 +116,7 @@ const ModalLogin = ({
                 fullWidth
                 variant="contained"
                 color="secondary"
+                id="buttonLogin"
                 className={classes.submit}
               >
                 Sign In
@@ -124,6 +127,7 @@ const ModalLogin = ({
                     variant="body2"
                     className={classes.link}
                     onClick={openRegister}
+                    id="registerLink"
                   >
                     Don't have an account? Sign Up
                   </Link>
