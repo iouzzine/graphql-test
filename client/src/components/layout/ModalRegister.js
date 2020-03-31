@@ -1,6 +1,8 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useMutation } from '@apollo/react-hooks';
+import { userRegister } from '../../graphQL/Mutations/auth.mutation';
 import { removeModalREGISTER, setModalLogin } from '../../actions/modal';
 import {
   Button,
@@ -27,9 +29,39 @@ const ModalRegister = ({
 }) => {
   const classes = useStyles();
 
+  const [registerUser] = useMutation(userRegister);
+
   const openLogin = () => {
     removeModalREGISTER();
     setModalLogin();
+  };
+
+  const [formData, setFormData] = useState({
+    email: '',
+    username: '',
+    password: '',
+    passwordConfirm: ''
+  });
+
+  const { email, username, password, passwordConfirm } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+
+    registerUser({
+      variables: {
+        email,
+        username,
+        password,
+        passwordConfirm
+      }
+    }).then(res => {
+      console.log('res -->', res);
+      openLogin();
+    });
   };
 
   return (
@@ -48,16 +80,17 @@ const ModalRegister = ({
             <Typography component="h1" variant="h5">
               Register
             </Typography>
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={e => onSubmit(e)}>
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="username"
                 label="Username"
                 name="username"
-                autoComplete="username"
+                id="username"
+                value={username}
+                onChange={e => onChange(e)}
               />
               <TextField
                 variant="outlined"
@@ -68,7 +101,8 @@ const ModalRegister = ({
                 label="Email"
                 type="email"
                 id="email"
-                autoComplete="email"
+                value={email}
+                onChange={e => onChange(e)}
               />
               <TextField
                 variant="outlined"
@@ -79,18 +113,20 @@ const ModalRegister = ({
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                value={password}
+                onChange={e => onChange(e)}
               />
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="confPassword"
+                name="passwordConfirm"
                 label="Password Confimation"
                 type="password"
-                id="confirmPassword"
-                autoComplete="confirmPwd"
+                id="passwordConfirm"
+                value={passwordConfirm}
+                onChange={e => onChange(e)}
               />
               <Button
                 type="submit"

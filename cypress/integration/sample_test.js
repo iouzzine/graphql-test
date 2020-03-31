@@ -8,44 +8,49 @@
 //   });
 // });
 
-describe('Get Website', () => {
-  it('Visit home Page', () => {
-    cy.visit('http://localhost:3000');
-  });
+it('Visit home Page', () => {
+  cy.visit('http://localhost:3000');
 });
 
-describe('Open Login and Register Modal', () => {
-  it('Open Login Modal', () => {
-    cy.get('#loginModal').click();
+describe('Register', () => {
+  it('Open Modal', () => {
+    cy.get('#registerModal').click();
   });
 
-  it('Open Register Modal from login Modal', () => {
-    cy.get('#registerLink').click();
-  });
+  it('Registre User', () => {
+    cy.get('form').within($form => {
+      cy.get('input[name="email"]')
+        .type('tes32@gmail.com')
+        .as('email');
+      cy.get('input[name="username"]')
+        .type('test3')
+        .as('username');
+      cy.get('input[name="password"]')
+        .type('Test@1337')
+        .as('password');
+      cy.get('input[name="passwordConfirm"]').type('Test@1337');
 
-  it('Open Login Modal from Register Modal', () => {
-    cy.get('#loginLink').click();
-  });
-});
-
-describe('Insert Login Input', () => {
-  it('Insert Email && Password', () => {
-    cy.get('#username')
-      .type('test')
-      .should('have.value', 'test');
-    cy.get('#password')
-      .type('Test@1337')
-      .should('have.value', 'Test@1337');
-
-    cy.get('#buttonLogin').click();
-  });
-});
-
-describe('Check Login', () => {
-  it('Check if logged', () => {
-    cy.contains('username:').then($el => {
-      const username = $el.text();
-      console.log('username', username);
+      cy.root().submit();
     });
   });
 });
+
+// describe('Insert Login Input', () => {
+//   it('Insert Email && Password', () => {
+//     cy.get('form').within($form => {
+//       cy.get('input[name="username"]').type('test');
+//       cy.get('input[name="password"]').type('Test@1337');
+
+//       cy.root().submit();
+//     });
+//   });
+// });
+
+// describe('Check Login', () => {
+//   it('Check if logged', () => {
+//     cy.contains('username:').then($el => {
+//       const username = $el.text();
+//       console.log('username', username);
+//     });
+//   });
+// });

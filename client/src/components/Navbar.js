@@ -47,6 +47,7 @@ const Navbar = ({
                 color="inherit"
                 style={{ marginRight: '1rem' }}
                 onClick={setModalREGISTER}
+                id="registerModal"
               >
                 Register
               </Button>

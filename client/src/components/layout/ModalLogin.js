@@ -1,8 +1,8 @@
 import React, { forwardRef, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
+import { userLogin } from '../../graphQL/Mutations/auth.mutation';
 import { removeModalLogin, setModalREGISTER } from '../../actions/modal';
 import { setLogin } from '../../actions/auth';
 import {
@@ -22,16 +22,6 @@ import useStyles from '../../palette/Classes';
 const Transition = forwardRef((props, ref) => {
   return <Slide direction="left" ref={ref} {...props} />;
 });
-
-const userLogin = gql`
-  mutation loginUser($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      email
-      username
-      token
-    }
-  }
-`;
 
 const ModalLogin = ({
   removeModalLogin,
